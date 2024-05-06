@@ -1,0 +1,64 @@
+﻿@model IEnumerable<RoxLibrary.Models.Borrow>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Start">Back to Library</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.BorrowDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BorrowStatus)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Customer)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Book)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.BorrowDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BorrowStatus)
+                    @if(item.BorrowStatus == BookStatus.Returned)
+                    {
+                        <p>(@item.BorrowReturnDate)</p>
+                    }
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Customer.CustomerName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Book.BookTitle)
+            </td>
+            <td class="btn-group btn-group-sm">
+                    <a asp-action="Edit" asp-route-id="@item.BorrowId" class="btn btn-primary">Edit</a>
+                    <a asp-action="Details" asp-route-id="@item.BorrowId" class="btn btn-primary">Details</a>
+                    <a asp-action="Delete" asp-route-id="@item.BorrowId" class="btn btn-primary">Delete</a>
+                    @if (item.BorrowStatus == BookStatus.Borrowed)
+                    {
+                        <form asp-controller="CustomerWithBooks" asp-action="ReturnBook" method="post">
+                            <input type="hidden" name="borrowId" value="@item.BorrowId" />
+                            <button type="submit" class="btn btn-danger">Return Book</button>
+                        </form>
+                    }
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

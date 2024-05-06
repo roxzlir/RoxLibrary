@@ -1,0 +1,36 @@
+﻿@model RoxLibrary.Models.Borrow
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Borrow</h1>
+
+<h4>Check out book</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="FkCustomerId" class="control-label">Select your name</label>
+                <select asp-for="FkCustomerId" class ="form-control" asp-items="ViewBag.FkCustomerId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="FkBookId" class="control-label">Select book</label>
+                <select asp-for="FkBookId" class ="form-control" asp-items="ViewBag.FkBookId"></select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Checkout" class="btn btn-primary"/>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Start">Back to Library</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,0 +1,12 @@
+﻿@{
+    ViewData["Title"] = "Library";
+}
+
+<h1>Welcome to Rox Library!</h1>
+<h3>Please select what you would like to do below</h3>
+
+<div class="btn-group btn-group-lg">
+    <a asp-action="Create" class="btn btn-primary">Checkout Book</a>
+    <a asp-action="Index" class="btn btn-primary">Library Index</a>
+    <a asp-controller="CustomerWithBooks" asp-action="Index" class="btn btn-primary">Search & Return</a>
+</div>

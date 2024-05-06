@@ -1,0 +1,58 @@
+﻿@model IEnumerable<RoxLibrary.Models.CustomerWithBooksViewModel>
+
+@{
+    ViewData["Title"] = "All Customers with their borrowed books";
+}
+
+<h2>Enter your name below</h2> 
+<p>Here you can search for your name with any letters</p> 
+<p>You will also be able to return any checked out books as well </p>
+
+<form asp-controller="CustomerWithBooks" asp-action="Index" method="get">
+    <div class="form-group">
+        <label for="customerName">Search</label>
+        <input type="text" class="form-control" id="customerName" name="customerName">
+    </div>
+    <button type="submit" class="btn btn-primary">Search</button>
+    <a asp-controller="Borrows" asp-action="Start" class="btn btn-primary">Back to library</a>
+</form>
+
+@if (Model != null && Model.Any())
+{
+    foreach (var customer in Model)
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>@customer.CustomerName</th>
+                    <th>Status</th>
+                    <th>Checked Out Date</th>
+                    <th></th>
+                </tr>
+            </thead>
+            @foreach (var book in customer.Books)
+            {
+                <tbody>
+                    <tr>
+                        <td>@book.BookTitle</td>
+                        <td>@book.BorrowStatus</td>
+                        <td>@book.BorrowDate.ToShortDateString()</td>
+                        @if (book.BorrowStatus == BookStatus.Borrowed)
+                        {
+                            <td>
+                            <form asp-controller="CustomerWithBooks" asp-action="ReturnBook" method="post">
+                                <input type="hidden" name="borrowId" value="@book.BorrowId" />
+                                <button type="submit" class="btn btn-danger">Return Book</button>
+                            </form>
+                            </td>
+                        }
+                    </tr>
+                </tbody>
+            }
+        </table>
+    }
+}
+else
+{
+    <p>No results found.</p>
+}
